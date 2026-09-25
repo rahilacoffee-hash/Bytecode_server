@@ -1,0 +1,12 @@
+import express from "express";
+import { getClientProfileController, updateClientProfileController, getAllClientsController, getAdminClientByIdController } from "./client.controller.js";
+import { clientUpdateSchema } from "./client.validation.js";
+import { validate } from "../../middleware/validate.middleware.js";
+import { requireClientAuth } from "../../middleware/clientAuth.middleware.js";
+import { requireAdminAuth } from "../../middleware/adminAuth.middleware.js";
+const router = express.Router();
+router.get("/me", requireClientAuth, getClientProfileController);
+router.patch("/me", requireClientAuth, validate(clientUpdateSchema), updateClientProfileController);
+router.get("/", requireAdminAuth, getAllClientsController);
+router.get("/:clientId", requireAdminAuth, getAdminClientByIdController);
+export default router;
